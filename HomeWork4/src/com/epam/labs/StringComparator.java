@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
  * Created by Maryna on 29.01.2017.
  */
-public class StringComparator implements Comparable<StringComparator>, Comparator<StringComparator> {
+public class StringComparator implements Comparable<StringComparator>{//}, Comparator<StringComparator> {
     private String string1, string2;
 public StringComparator(String string1, String string2){
     this.string1=string1;
@@ -25,8 +25,8 @@ public StringComparator(){}
     return string2;
     }
 
-    @Override
-    public int compare(StringComparator o1, StringComparator o2) {
-        return o1.getString2().compareTo(o2.getString2());
-    }
+//    @Override
+//    public int compare(StringComparator o1, StringComparator o2) {
+//        return o1.getString1().compareTo(o2.getString1());
+//    }
 }
