@@ -22,8 +22,6 @@ public class Main {
                 break;
             case 3:
                 testCustomQueues();
-                testLinkedListQueue();
-                testArrayQueue();
                 break;
 
         }
@@ -54,80 +52,102 @@ public class Main {
         ReferenceQueue referenceQueue = new ReferenceQueue();
         Random random = new Random(1000);
         long start = System.currentTimeMillis();
-        for(int i =0 ; i<1000; i++)
+        for(int i =0 ; i<1000000; i++)
             arrayQueue.push(random.nextInt());
 
-        for(int i =0 ; i<1000; i++)
+        for(int i =0 ; i<1000000; i++)
             arrayQueue.pop();
+        System.out.format("Time token: %d\n", System.currentTimeMillis()-start );
+
+        System.out.println("LinkedList based:");
+         start = System.currentTimeMillis();
+        for(int i =0 ; i<1000000; i++)
+            linkedListQueue.push(random.nextInt());
+
+        for(int i =0 ; i<1000000; i++)
+            linkedListQueue.pop();
+        System.out.format("Time token: %d\n", System.currentTimeMillis()-start );
+
+        System.out.println("References based:");
+        start = System.currentTimeMillis();
+        for(int i =0 ; i<1000000; i++)
+            referenceQueue.push(random.nextInt());
+
+        for(int i =0 ; i<1000000; i++)
+            referenceQueue.pop();
         System.out.format("Time token: %d\n", System.currentTimeMillis()-start );
 
     }
 
     public static void testStringComparator() {
-        testArrayListOfCountryCapitalPair();
-        testArrayOfCountryCapitalPairs();
-
+        System.out.println(" 1. Test ArrayList of country-capital pairs\n 2. Test array of country-capital pairs\n");
+        int chose = scanner.nextInt();
+        switch (chose){
+            case 1:
+                testArrayListOfCountryCapitalPair();
+                break;
+            case 2:
+                testArrayOfCountryCapitalPairs();
+                break;
+        }
     }
 
     private static void testArrayOfCountryCapitalPairs() {
-        StringComparator[] stringComparators = new StringComparator[5];
+        CountryCapital[] countryCapitals = new CountryCapital[5];
         for (int i = 0; i < 5; i++)
-            stringComparators[i] = generator.getPair();
+            countryCapitals[i] = generator.getPair();
 
         System.out.println("\nGenerated array of country-capital pairs:\n");
-        for (int i = 0; i < stringComparators.length; i++)
-            System.out.println(stringComparators[i].getString1() + stringComparators[i].getString2());
+        for (int i = 0; i < countryCapitals.length; i++)
+            System.out.format("%s - %s\n", countryCapitals[i].getCountry(), countryCapitals[i].getCapital());
 
-        Arrays.sort(stringComparators);
+        Arrays.sort(countryCapitals);
 
         System.out.println("\nSorted array of country-capital pairs by country:\n");
-        for (int i = 0; i < stringComparators.length; i++)
-            System.out.println(stringComparators[i].getString1() + " " + stringComparators[i].getString2());
+        for (int i = 0; i < countryCapitals.length; i++)
+            System.out.format("%s - %s\n", countryCapitals[i].getCountry(), countryCapitals[i].getCapital());
 
-        Arrays.sort(stringComparators, new CustomComparator());
+        Arrays.sort(countryCapitals, new CustomComparator());
         System.out.println("\nSorted array of country-capital pairs by capital:\n");
 
-        for (int i = 0; i < stringComparators.length; i++)
-            System.out.println(stringComparators[i].getString1() + " " + stringComparators[i].getString2());
+        for (int i = 0; i < countryCapitals.length; i++)
+            System.out.format("%s - %s\n", countryCapitals[i].getCountry(), countryCapitals[i].getCapital());
 
-        StringComparator key = new StringComparator("124", "123");
-
+        CountryCapital key;
         System.out.println("\nEnter some country or capital from the list above");
         scanner.next();
         String city = scanner.nextLine();
-        key = new StringComparator("", city);
-        int index = Arrays.binarySearch(stringComparators, key, new CustomComparator());
+        key = new CountryCapital("", city);
+        int index = Arrays.binarySearch(countryCapitals, key, new CustomComparator());
         if (index >= 0)
-            System.out.format("\n%s is the capital of %s\n", city, stringComparators[index].getString1());
-            // System.out.println(stringComparators[index].getString1() + " " + stringComparators[index].getString2());
+            System.out.format("\n%s is the capital of %s\n", city, countryCapitals[index].getCountry());
         else {
-            key = new StringComparator(city, "");
-            index = Arrays.binarySearch(stringComparators, key);
+            key = new CountryCapital(city, "");
+            index = Arrays.binarySearch(countryCapitals, key);
             if (index >= 0)
-                System.out.format("\n%s has capital -  %s\n", city, stringComparators[index].getString2());
+                System.out.format("\n%s has capital -  %s\n", city, countryCapitals[index].getCapital());
             else
                 System.out.println("binary search failed");
         }
     }
 
-
     private static void testArrayListOfCountryCapitalPair() {
-        ArrayList<StringComparator> arrayList = new ArrayList(5);
+        ArrayList<CountryCapital> arrayList = new ArrayList(5);
 
         for (int i = 0; i < 5; i++)
             arrayList.add(generator.getPair());
         System.out.println("ArrayList of country-capital pairs sorted by country\n");
         Collections.sort(arrayList);
-        for (StringComparator stringCompar :
+        for (CountryCapital stringCompar :
                 arrayList) {
-            System.out.format("%s - %s\n", stringCompar.getString1(), stringCompar.getString2());
+            System.out.format("%s - %s\n", stringCompar.getCountry(), stringCompar.getCapital());
         }
         Collections.sort(arrayList, new CustomComparator());
 
         System.out.println("\nArrayList of country-capital pairs sorted by city\n");
-        for (StringComparator stringCompar :
+        for (CountryCapital stringCompar :
                 arrayList) {
-            System.out.format("%s - %s\n", stringCompar.getString1(), stringCompar.getString2());
+            System.out.format("%s - %s\n", stringCompar.getCountry(), stringCompar.getCapital());
         }
 
     }

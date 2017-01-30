@@ -20,8 +20,8 @@ public class Generator {
     public String getCapital(int index){
         return countryCapital[index][1];
     }
-    public StringComparator getPair(){
+    public CountryCapital getPair(){
         int index=random.nextInt(countryCapital.length);
-        return new StringComparator(getCountry(index), getCapital(index));
+        return new CountryCapital(getCountry(index), getCapital(index));
     }
 }
